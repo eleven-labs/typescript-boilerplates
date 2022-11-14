@@ -1,0 +1,12 @@
+{
+  "pages": {
+    "home": {
+      "description": "Modifier <code>src/pages/Home/Home.tsx</code> et sauvegarder pour tester"
+    },
+    "notFound": {
+      "title": "404",
+      "description": "Il manque quelque chose.",
+      "subdescription": "Désolé, nous ne trouvons pas cette page. Vous trouverez beaucoup de choses à explorer sur la page d'accueil."
+    }
+  }
+}
