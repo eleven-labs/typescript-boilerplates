@@ -15,13 +15,12 @@ const createServer = async (): Promise<void> => {
   if (isProd) {
     const { dirname, resolve } = await import('node:path');
     const { fileURLToPath } = await import('node:url');
-    const { readFileSync } = await import('node:fs');
+    const { getLinksAndScripts } = await import('./helpers/ssrHelper');
     const { default: serveStatic } = await import('serve-static');
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
-    const manifest = JSON.parse(readFileSync(resolve(__dirname, 'public/manifest.json'), { encoding: 'utf-8' }));
-    const manifestEntryClient = manifest['src/entry-client.tsx'];
+    const { links, scripts } = getLinksAndScripts(__dirname);
 
     app.use(serveStatic(resolve(__dirname, 'public'), { index: false }));
 
@@ -33,16 +32,8 @@ const createServer = async (): Promise<void> => {
         const html = await render({
           url,
           i18n: req.i18n,
-          links: manifestEntryClient['css']?.map((file: string) => ({
-            rel: 'stylesheet',
-            href: `/${file}`,
-          })),
-          scripts: [
-            {
-              type: 'module',
-              src: `/${manifestEntryClient['file']}`,
-            },
-          ],
+          links,
+          scripts,
         });
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e) {

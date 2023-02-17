@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 
-export { i18nConfig } from '@/config/i18n';
 import { RootContainer } from '@/containers/RootContainer';
 import { HtmlTemplate, HtmlTemplateProps } from '@/templates/HtmlTemplate';
 
