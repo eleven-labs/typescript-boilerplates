@@ -12,7 +12,7 @@ export const HtmlTemplate: React.FC<HtmlTemplateProps> = ({ staticPayload, conte
   <html lang={staticPayload.lang}>
     <head>
       <meta charSet="UTF-8" />
-      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+      <link rel="icon" href="/favicon.ico" />
       {[...(links || []), ...(staticPayload?.links || [])].map((link, index) => (
         <link key={index} {...link} />
       ))}

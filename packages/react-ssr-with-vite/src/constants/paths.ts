@@ -1,5 +1,5 @@
 export const PATHS = {
   ROOT: '/',
   HOME: '/:lang/',
-  OTHER_PAGE: '/:lang/other-page',
+  POKEMON_LIST: '/:lang/pokemon-list/',
 };

@@ -3,7 +3,7 @@
     "change-lang": "change language to {{lang}}",
     "menu": {
       "home": "Home",
-      "other-page": "Other page"
+      "pokemon-list": "Pokemon List"
     }
   },
   "pages": {
@@ -11,8 +11,8 @@
       "title": "React SSR with Vite + React Router + I18Next + Hoofd",
       "description": "Edit <code>src/pages/HomePage/HomePage.tsx</code> and save to test"
     },
-    "other-page": {
-      "title": "Other Page",
+    "pokemon-list": {
+      "title": "Pokemon List",
       "description": "Vivamus laoreet ex non tellus hendrerit ullamcorper. Nulla nec varius elit. Sed rutrum pharetra ante."
     },
     "not-found": {

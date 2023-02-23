@@ -2,7 +2,9 @@ import { StaticPayload } from 'hoofd/dist/dispatcher';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-export const getLinksAndScripts = (dirname: string): {
+export const getLinksAndScripts = (
+  dirname: string
+): {
   links?: StaticPayload['links'];
   scripts?: StaticPayload['scripts'];
 } => {

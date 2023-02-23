@@ -19,7 +19,7 @@ export const getUrlsByLang = (): { lang: string; url: string }[] => {
     });
     currentUrls.push({
       lang,
-      url: generatePath(PATHS.OTHER_PAGE, { lang }),
+      url: generatePath(PATHS.POKEMON_LIST, { lang }),
     });
     return currentUrls;
   }, []);
