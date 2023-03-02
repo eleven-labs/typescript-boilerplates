@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import i18nextHttpMiddleware from 'i18next-http-middleware';
 
 import { i18nConfig } from '@/config/i18n';
+import { createRequestByExpressRequest } from '@/helpers/requestHelper';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -15,34 +16,24 @@ const createServer = async (): Promise<void> => {
   if (isProd) {
     const { dirname, resolve } = await import('node:path');
     const { fileURLToPath } = await import('node:url');
-    const { readFileSync } = await import('node:fs');
+    const { getLinksAndScripts } = await import('./helpers/ssrHelper');
     const { default: serveStatic } = await import('serve-static');
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
-    const manifest = JSON.parse(readFileSync(resolve(__dirname, 'public/manifest.json'), { encoding: 'utf-8' }));
-    const manifestEntryClient = manifest['src/entry-client.tsx'];
+    const { links, scripts } = getLinksAndScripts(__dirname);
 
     app.use(serveStatic(resolve(__dirname, 'public'), { index: false }));
 
     app.use('*', async (req, res, next) => {
-      const url = req.originalUrl;
-
       try {
         const { render } = await import('./entry-server.js');
+        const request = createRequestByExpressRequest(req);
         const html = await render({
-          url,
+          request,
           i18n: req.i18n,
-          links: manifestEntryClient['css']?.map((file: string) => ({
-            rel: 'stylesheet',
-            href: `/${file}`,
-          })),
-          scripts: [
-            {
-              type: 'module',
-              src: `/${manifestEntryClient['file']}`,
-            },
-          ],
+          links,
+          scripts,
         });
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e) {
@@ -63,8 +54,9 @@ const createServer = async (): Promise<void> => {
 
       try {
         const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
+        const request = createRequestByExpressRequest(req);
         const html = await render({
-          url,
+          request,
           i18n: req.i18n,
           scripts: [
             {

@@ -12,15 +12,14 @@ export const HtmlTemplate: React.FC<HtmlTemplateProps> = ({ staticPayload, conte
   <html lang={staticPayload.lang}>
     <head>
       <meta charSet="UTF-8" />
-      <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-      <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
+      <link rel="icon" href="/favicon.ico" />
       {[...(links || []), ...(staticPayload?.links || [])].map((link, index) => (
         <link key={index} {...link} />
       ))}
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>{staticPayload.title}</title>
     </head>
-    <body className="flex items-center justify-center">
+    <body>
       <div
         id="root"
         dangerouslySetInnerHTML={{

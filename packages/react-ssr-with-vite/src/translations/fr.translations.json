@@ -1,9 +1,25 @@
 {
+  "layout": {
+    "change-lang": "changer de langue en {{lang}}",
+    "menu": {
+      "home": "Accueil",
+      "pokemon-list": "Liste de Pokemon"
+    }
+  },
   "pages": {
     "home": {
-      "description": "Modifier <code>src/pages/Home/Home.tsx</code> et sauvegarder pour tester"
+      "title": "React SSR avec Vite + React Router + I18Next + Hoofd",
+      "description": "Modifier <code>src/pages/HomePage/HomePage.tsx</code> et sauvegarder pour tester"
     },
-    "notFound": {
+    "pokemon-list": {
+      "title": "Liste de Pokemon",
+      "description": "Vivamus laoreet ex non tellus hendrerit ullamcorper. Nulla nec varius elit. Sed rutrum pharetra ante."
+    },
+    "other-page": {
+      "title": "Autre Page",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce convallis ligula erat, at malesuada ante venenatis ac"
+    },
+    "not-found": {
       "title": "404",
       "description": "Il manque quelque chose.",
       "subdescription": "Désolé, nous ne trouvons pas cette page. Vous trouverez beaucoup de choses à explorer sur la page d'accueil."

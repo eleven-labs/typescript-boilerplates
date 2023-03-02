@@ -12,6 +12,6 @@ npx degit https://github.com/eleven-labs/typescript-boilerplates/packages/boiler
 
 | Name                                 | Technologies used                                           |  Status     |
 | ------------------------------------ | ----------------------------------------------------------- | --------    |
-| React SSR with Vite                  | React + Vite + React Router + I18Next + Hoofd               | In progress |
+| React SSR with Vite and Prerender    | React + Vite + React Router + I18Next + Hoofd               | Completed   |
 | React Design System with Storybook   | React + Storybook + Style Dictionary + Utility Classes      | Planned     |
 | GraphQL Server with NestJS           | NestJS + Apollo + TypeORM                                   | Planned     |

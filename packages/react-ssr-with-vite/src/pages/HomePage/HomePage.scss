@@ -1,12 +1,18 @@
-.logo {
+.logo-vite, .logo-react {
   height: 12em;
   padding: 1.5em;
   will-change: filter;
+}
+
+.logo-vite {
   &:hover {
     filter: drop-shadow(0 0 2em #646cffaa);
-    &.react {
-      filter: drop-shadow(0 0 2em #61dafbaa);
-    }
+  }
+}
+
+.logo-react {
+  &:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
   }
 }
 
@@ -20,7 +26,9 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  a:nth-of-type(2) {
+    .logo-react, .logo-svg {
+      animation: logo-spin infinite 20s linear;
+    }
   }
 }
