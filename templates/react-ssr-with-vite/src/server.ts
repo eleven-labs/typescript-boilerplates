@@ -20,68 +20,62 @@ const createServer = async (): Promise<void> => {
     const { links, scripts } = getLinksAndScripts(currentDirname);
 
     app.use(serveStatic(resolve(currentDirname, 'public'), { index: false }));
-    // eslint-disable-next-line import/no-named-as-default-member
     i18next.use(i18nextHttpMiddleware.LanguageDetector).init(i18nConfig);
     app.use(i18nextHttpMiddleware.handle(i18next));
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    app.use('*', async (req, res, next) => {
+    app.use('*', async (expressRequest, response, next) => {
       try {
         const { render } = await import('./entry-server.js');
-        const request = createRequestByExpressRequest(req);
         const html = await render({
-          request,
-          i18n: req.i18n,
+          i18n: expressRequest.i18n,
           links,
+          request: createRequestByExpressRequest(expressRequest),
           scripts: [
             {
-              text: getInlineVariablesForI18n(req.i18n),
+              text: getInlineVariablesForI18n(expressRequest.i18n),
             },
             ...scripts,
           ],
         });
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
-      } catch (e) {
-        next(e);
+        response.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+      } catch (error) {
+        next(error);
       }
     });
   } else {
     const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
-      server: { middlewareMode: true, cors: true },
       appType: 'custom',
+      server: { cors: true, middlewareMode: true },
     });
 
     app.use(vite.middlewares);
-    // eslint-disable-next-line import/no-named-as-default-member
     i18next.use(i18nextHttpMiddleware.LanguageDetector).init(i18nConfig);
     app.use(i18nextHttpMiddleware.handle(i18next));
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    app.use('*', async (req, res, next) => {
-      const url = req.originalUrl;
+    app.use('*', async (expressRequest, response, next) => {
+      const url = expressRequest.originalUrl;
 
       try {
         const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
-        const request = createRequestByExpressRequest(req);
         const html = await render({
-          request,
-          i18n: req.i18n,
+          i18n: expressRequest.i18n,
+          request: createRequestByExpressRequest(expressRequest),
           scripts: [
             {
-              text: getInlineVariablesForI18n(req.i18n),
+              text: getInlineVariablesForI18n(expressRequest.i18n),
             },
             {
-              type: 'module',
               src: '/src/entry-client.tsx',
+              type: 'module',
             },
           ],
         });
         const htmlWithViteHMRClient = await vite.transformIndexHtml(url, html);
-        res.status(200).set({ 'Content-Type': 'text/html' }).end(htmlWithViteHMRClient);
-      } catch (e) {
-        vite.ssrFixStacktrace(e as Error);
-        next(e);
+        response.status(200).set({ 'Content-Type': 'text/html' }).end(htmlWithViteHMRClient);
+      } catch (error) {
+        vite.ssrFixStacktrace(error as Error);
+        next(error);
       }
     });
   }

@@ -1,16 +1,21 @@
 import '@eleven-labs/design-system/style.css';
-
 import * as React from 'react';
+
 import { getPathFile } from '@/helpers/assetHelper';
 
 export interface HtmlTemplateProps {
-  lang: string;
-  title: string;
   content: string;
-  metas?: Array<React.MetaHTMLAttributes<HTMLMetaElement>>;
+  lang: string;
   links?: Array<React.LinkHTMLAttributes<HTMLLinkElement>>;
+  metas?: Array<React.MetaHTMLAttributes<HTMLMetaElement>>;
+  scripts?: Array<
+    React.ScriptHTMLAttributes<HTMLScriptElement> & {
+      critical?: boolean;
+      text?: string;
+    }
+  >;
   styles?: Array<React.StyleHTMLAttributes<HTMLStyleElement> & { text?: string }>;
-  scripts?: Array<React.ScriptHTMLAttributes<HTMLScriptElement> & { critical?: boolean; text?: string }>;
+  title: string;
 }
 
 const renderScripts = (scripts: HtmlTemplateProps['scripts']): JSX.Element[] | undefined =>
@@ -28,22 +33,18 @@ const renderScripts = (scripts: HtmlTemplateProps['scripts']): JSX.Element[] | u
     />
   ));
 
-export const HtmlTemplate: React.FC<HtmlTemplateProps> = ({ lang, title, content, metas, links, styles, scripts }) => (
+export const HtmlTemplate: React.FC<HtmlTemplateProps> = ({ content, lang, links, metas, scripts, styles, title }) => (
   <html lang={lang}>
     <head>
-      <meta charSet="UTF-8" />
-      <meta name="robots" content="index, follow, noarchive" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      {metas?.map((meta, index) => (
-        <meta key={index} {...meta} />
-      ))}
-      <link rel="shortcut icon" type="image/x-icon" href={getPathFile('/favicon.ico')} />
-      <link rel="manifest" href={getPathFile('/web-app-manifest.json')} />
-      {links?.map((link, index) => (
-        <link key={index} {...link} />
-      ))}
+      <meta charSet="utf8" />
+      <meta content="index, follow, noarchive" name="robots" />
+      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+      <meta content="yes" name="mobile-web-app-capable" />
+      <meta content="yes" name="apple-mobile-web-app-capable" />
+      {metas?.map((meta, index) => <meta key={index} {...meta} />)}
+      <link href={getPathFile('/favicon.ico')} rel="shortcut icon" type="image/x-icon" />
+      <link href={getPathFile('/web-app-manifest.json')} rel="manifest" />
+      {links?.map((link, index) => <link key={index} {...link} />)}
       {styles?.map(({ text, ...props }, index) => (
         <style
           key={index}
@@ -62,10 +63,10 @@ export const HtmlTemplate: React.FC<HtmlTemplateProps> = ({ lang, title, content
     </head>
     <body>
       <div
-        id="root"
         dangerouslySetInnerHTML={{
           __html: content,
         }}
+        id="root"
       />
       {renderScripts(scripts?.filter((script) => !script.critical))}
     </body>

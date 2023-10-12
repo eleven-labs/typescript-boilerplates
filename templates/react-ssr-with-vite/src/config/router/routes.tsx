@@ -13,6 +13,45 @@ import {
 
 export const routes: RouteObject[] = [
   {
+    children: [
+      {
+        element: <HomePageContainer />,
+        path: PATHS.ROOT,
+      },
+      {
+        children: [
+          {
+            element: <HomePageContainer />,
+            path: PATHS.HOME,
+          },
+          {
+            element: <PokemonListPageContainer />,
+            loader: async (): Promise<{
+              pokemons: Array<{ name: string }>;
+            }> => {
+              const { results } = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=3&offset=0`).then((response) =>
+                response.json()
+              );
+              return {
+                pokemons: results,
+              };
+            },
+            path: PATHS.POKEMON_LIST,
+          },
+        ],
+        loader: ({ params }): Record<string, unknown> => {
+          if (!AUTHORIZED_LANGUAGES.includes(params.lang as string)) {
+            throw new Error('Lang not Found');
+          }
+          return {};
+        },
+        path: '/:lang',
+      },
+      {
+        element: <NotFoundPageContainer />,
+        path: '*',
+      },
+    ],
     element: (
       <LayoutTemplateContainer>
         <Outlet />
@@ -23,42 +62,5 @@ export const routes: RouteObject[] = [
         <NotFoundPageContainer />
       </LayoutTemplateContainer>
     ),
-    children: [
-      {
-        path: PATHS.ROOT,
-        element: <HomePageContainer />,
-      },
-      {
-        path: '/:lang',
-        loader: ({ params }): Record<string, unknown> => {
-          if (!AUTHORIZED_LANGUAGES.includes(params.lang as string)) {
-            throw new Error('Lang not Found');
-          }
-          return {};
-        },
-        children: [
-          {
-            path: PATHS.HOME,
-            element: <HomePageContainer />,
-          },
-          {
-            path: PATHS.POKEMON_LIST,
-            element: <PokemonListPageContainer />,
-            loader: async (): Promise<{ pokemons: Array<{ name: string }> }> => {
-              const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=3&offset=0`).then(
-                async (res) => await res.json()
-              );
-              return {
-                pokemons: response.results,
-              };
-            },
-          },
-        ],
-      },
-      {
-        path: '*',
-        element: <NotFoundPageContainer />,
-      },
-    ],
   },
 ];
