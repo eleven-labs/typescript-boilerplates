@@ -19,36 +19,36 @@ export const createFetchHeaders = (requestHeaders: express.Request['headers']): 
   return headers;
 };
 
-export const createRequestByExpressRequest = (req: express.Request): Request => {
-  const origin: string = `${req.protocol}://${req.get('host') as string}`;
+export const createRequestByExpressRequest = (request: express.Request): Request => {
+  const origin: string = `${request.protocol}://${request.get('host') as string}`;
   // Note: This had to take originalUrl into account for presumably vite's proxying
-  const url = new URL(req.originalUrl || req.url, origin);
+  const url = new URL(request.originalUrl || request.url, origin);
 
   const controller = new AbortController();
 
-  req.on('close', () => {
+  request.on('close', () => {
     controller.abort();
   });
 
   const init: RequestInit = {
-    method: req.method,
-    headers: createFetchHeaders(req.headers),
+    headers: createFetchHeaders(request.headers),
+    method: request.method,
     signal: controller.signal,
   };
 
-  if (req.method !== 'GET' && req.method !== 'HEAD') {
-    init.body = req.body;
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
+    init.body = request.body;
   }
 
   return new Request(url.href, init);
 };
 
-export const createRequestByUrl = (options: { url: string; origin?: string }): Request => {
+export const createRequestByUrl = (options: { origin?: string; url: string }): Request => {
   const controller = new AbortController();
 
   const init = {
-    method: 'GET',
     headers: new Headers(),
+    method: 'GET',
     signal: controller.signal,
   };
   return new Request(new URL(options.url, options.origin ?? 'http://localhost').href, init);

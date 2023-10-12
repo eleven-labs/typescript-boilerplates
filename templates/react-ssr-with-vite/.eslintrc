@@ -1,15 +1,3 @@
 {
-  "extends": "@eleven-labs/eslint-config-react",
-  "rules": {
-    "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/no-floating-promises": "off"
-  },
-  "overrides": [
-    {
-      "files": ["*.stories.tsx", "*.test.ts"],
-      "rules": {
-        "@typescript-eslint/consistent-type-assertions": "off"
-      }
-    }
-  ]
+  "extends": "@eleven-labs/eslint-config-react"
 }

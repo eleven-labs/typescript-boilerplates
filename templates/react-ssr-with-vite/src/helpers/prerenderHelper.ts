@@ -1,6 +1,6 @@
+import { createInstance as createInstanceI18Next, type i18n } from 'i18next';
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { type i18n, createInstance as createInstanceI18Next } from 'i18next';
 import { generatePath } from 'react-router-dom';
 
 import { i18nConfig } from '@/config/i18n';
@@ -18,14 +18,16 @@ const getI18nInstanceByLang = (lang: string): i18n => {
 
 const getUrlsByLang = (): Array<{ lang: string; url: string }> => {
   const urlsByLang = AUTHORIZED_LANGUAGES.reduce<ReturnType<typeof getUrlsByLang>>((currentUrls, lang) => {
-    currentUrls.push({
-      lang,
-      url: generatePath(PATHS.HOME, { lang }),
-    });
-    currentUrls.push({
-      lang,
-      url: generatePath(PATHS.POKEMON_LIST, { lang }),
-    });
+    currentUrls.push(
+      {
+        lang,
+        url: generatePath(PATHS.HOME, { lang }),
+      },
+      {
+        lang,
+        url: generatePath(PATHS.POKEMON_LIST, { lang }),
+      }
+    );
     return currentUrls;
   }, []);
 
@@ -38,25 +40,25 @@ const getUrlsByLang = (): Array<{ lang: string; url: string }> => {
   ];
 };
 
-export const generateHtmlFiles = async (rootDir: string): Promise<void> => {
+export const generateHtmlFiles = async (rootDirectory: string): Promise<void> => {
   const urlsByLang = getUrlsByLang();
-  const { links, scripts } = getLinksAndScripts(resolve(rootDir, 'dist'));
+  const { links, scripts } = getLinksAndScripts(resolve(rootDirectory, 'dist'));
 
   for (const { lang, url } of urlsByLang) {
     const i18n = getI18nInstanceByLang(lang);
 
     const html = await render({
-      request: createRequestByUrl({ url }),
       i18n,
       links,
+      request: createRequestByUrl({ url }),
       scripts,
     });
 
-    const filePath = resolve(rootDir, 'dist/public', `${url.length > 1 ? `${url.substring(1)}/` : ''}index.html`);
+    const filePath = resolve(rootDirectory, 'dist/public', `${url.length > 1 ? `${url.slice(1)}/` : ''}index.html`);
 
-    const dirPath = dirname(filePath);
-    if (!existsSync(dirPath)) {
-      mkdirSync(dirPath, { recursive: true });
+    const directoryPath = dirname(filePath);
+    if (!existsSync(directoryPath)) {
+      mkdirSync(directoryPath, { recursive: true });
     }
     writeFileSync(filePath, html, 'utf8');
   }

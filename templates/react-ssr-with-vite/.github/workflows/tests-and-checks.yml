@@ -1,0 +1,33 @@
+name: Tests and Checks
+on:
+  pull_request:
+    paths:
+      - 'templates/react-ssr-with-vite/**'
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install modules
+        run: yarn --frozen-lockfile
+      - name: Run ESLint
+        run: yarn lint:es
+      - name: Run Compile TypeScript
+        run: yarn tsc
+      - name: Run Test
+        run: yarn test

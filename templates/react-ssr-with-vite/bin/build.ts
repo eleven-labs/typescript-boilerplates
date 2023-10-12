@@ -5,11 +5,11 @@ const build = async (): Promise<void> => {
   buildVite({
     build: {
       emptyOutDir: false,
-      ssr: true,
       outDir: 'dist',
       rollupOptions: {
         input: 'src/server.ts',
       },
+      ssr: true,
     },
   });
 

@@ -1,12 +1,16 @@
 import { getEnv } from '@/helpers/getEnvHelper';
 
-export const AUTHORIZED_LANGUAGES: string[] = ['fr', 'en'];
-export const DEFAULT_LANGUAGE: string = 'fr';
+export const LanguageEnum = {
+  EN: 'en',
+  FR: 'fr',
+};
+export const AUTHORIZED_LANGUAGES: string[] = Object.values(LanguageEnum);
+export const DEFAULT_LANGUAGE: string = LanguageEnum.FR;
 
 export const PATHS = {
-  ROOT: '/',
   HOME: '/:lang/',
   POKEMON_LIST: '/:lang/pokemon-list/',
+  ROOT: '/',
 };
 export const IS_DEV = getEnv<boolean>('DEV');
 export const IS_PROD = getEnv<boolean>('PROD');
