@@ -6,9 +6,9 @@ export interface PokemonListPageProps {
   title: string;
 }
 
-export const PokemonListPage: React.FC<PokemonListPageProps> = ({ pokemons }) => (
+export const PokemonListPage: React.FC<PokemonListPageProps> = ({ pokemons, title }) => (
   <>
-    <Heading>{<title />}</Heading>
+    <Heading>{title}</Heading>
     <Flex alignItems="center" gap="xs" justifyContent="center">
       {pokemons.map((pokemon, index) => (
         <Box key={index} textAlign="center">

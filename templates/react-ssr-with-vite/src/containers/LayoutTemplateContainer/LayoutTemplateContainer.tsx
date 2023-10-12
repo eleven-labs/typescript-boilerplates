@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, generatePath } from 'react-router-dom';
 
-import { PATHS } from '@/constants';
+import { LanguageEnum, PATHS } from '@/constants';
 import { getValidLanguage } from '@/helpers/langHelper';
 import { useCurrentPath } from '@/hooks/useCurrentPath';
 
@@ -14,7 +14,7 @@ export interface LayoutTemplateContainerProps {
 export const LayoutTemplateContainer: React.FC<LayoutTemplateContainerProps> = ({ children }) => {
   const { i18n, t } = useTranslation();
   const currentPath = useCurrentPath();
-  const languageForChange = i18n.language === 'fr' ? 'en' : 'fr';
+  const languageForChange = i18n.language === LanguageEnum.FR ? LanguageEnum.EN : LanguageEnum.FR;
 
   return (
     <Flex alignItems="center" flexDirection="column" gap="m" height="full" justifyContent="center">
@@ -38,8 +38,10 @@ export const LayoutTemplateContainer: React.FC<LayoutTemplateContainerProps> = (
         </Button>
       </Flex>
       <Button
+        to={generatePath(!currentPath || currentPath === PATHS.ROOT ? PATHS.HOME : currentPath, {
+          lang: languageForChange,
+        })}
         as={Link}
-        to={generatePath(currentPath === PATHS.ROOT ? PATHS.HOME : currentPath, { lang: languageForChange })}
         variant="secondary"
       >
         {t('layout.change-lang', { lang: languageForChange })}

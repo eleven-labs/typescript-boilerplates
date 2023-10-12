@@ -1,7 +1,11 @@
 import { getEnv } from '@/helpers/getEnvHelper';
 
-export const AUTHORIZED_LANGUAGES: string[] = ['fr', 'en'];
-export const DEFAULT_LANGUAGE: string = 'fr';
+export const LanguageEnum = {
+  EN: 'en',
+  FR: 'fr',
+};
+export const AUTHORIZED_LANGUAGES: string[] = Object.values(LanguageEnum);
+export const DEFAULT_LANGUAGE: string = LanguageEnum.FR;
 
 export const PATHS = {
   HOME: '/:lang/',
