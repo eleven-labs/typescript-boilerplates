@@ -1,0 +1,24 @@
+{
+  "layout": {
+    "change-lang": "change language to {{lang}}",
+    "menu": {
+      "home": "Home",
+      "pokemon-list": "Pokemon List"
+    }
+  },
+  "pages": {
+    "home": {
+      "title": "React SSR with Vite + React Router + I18Next + Hoofd",
+      "description": "Edit <code>src/pages/HomePage/HomePage.tsx</code> and save to test"
+    },
+    "pokemon-list": {
+      "title": "Pokemon List",
+      "description": "Vivamus laoreet ex non tellus hendrerit ullamcorper. Nulla nec varius elit. Sed rutrum pharetra ante."
+    },
+    "not-found": {
+      "title": "404",
+      "description": "Something's missing.",
+      "sub-description": "Sorry, we can't find that page. You'll find lots to explore on the home page."
+    }
+  }
+}

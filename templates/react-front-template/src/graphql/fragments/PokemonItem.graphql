@@ -1,0 +1,4 @@
+fragment PokemonItem on PokemonItem {
+    id
+    name
+}
