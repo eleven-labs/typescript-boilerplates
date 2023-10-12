@@ -1,0 +1,3 @@
+{
+  "extends": "@eleven-labs/eslint-config-react"
+}

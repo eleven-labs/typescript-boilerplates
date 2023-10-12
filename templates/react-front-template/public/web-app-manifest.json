@@ -1,0 +1,10 @@
+{
+  "short_name": "Eleven Labs",
+  "name": "Eleven Labs",
+  "icons": [],
+  "background_color": "#224579",
+  "theme_color": "#3767B6",
+  "display": "standalone",
+  "scope": "/",
+  "shortcuts": []
+}

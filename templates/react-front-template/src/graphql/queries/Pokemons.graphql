@@ -1,0 +1,8 @@
+query Pokemons($limit: Int = 3, $offset: Int = 0) {
+    pokemons(limit: $limit, offset: $offset) {
+        count
+        results {
+            ...PokemonItem
+        }
+    }
+}
